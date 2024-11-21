@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import path from 'path';
 import vue from '@vitejs/plugin-vue';
-import ziggy from 'vite-plugin-ziggy';
 
 export default defineConfig({
     resolve: {

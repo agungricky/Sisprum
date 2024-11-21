@@ -99,7 +99,7 @@ import { Link } from '@inertiajs/vue3';
                 </a>
                 <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
-                        <Link :href="route('coba')">
+                        <Link :href="route('TambahRumah')">
                             <i class="bi bi-circle"></i><span>Tambah Rumah</span>
                         </Link>
                     </li>
