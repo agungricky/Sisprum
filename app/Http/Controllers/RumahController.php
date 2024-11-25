@@ -12,7 +12,9 @@ class RumahController extends Controller
      */
     public function index()
     {
-        //
+        $Rumah = Rumah::all()->toArray();
+        // dd($Rumah);
+        return inertia('TableRumah', compact('Rumah'));
     }
 
     /**
@@ -73,6 +75,7 @@ class RumahController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Rumah::find($id)->delete();
+        return redirect()->route('DataRumah');
     }
 }

@@ -1,24 +1,30 @@
 <script setup>
 import Main from '../Pages/main.vue';
 import { useForm } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { defineRule, Field, Form as VeeForm, ErrorMessage } from "vee-validate";
 
+// Definisikan aturan validasi Yup
+defineRule("required", (value) => (value ? true : "Field ini wajib diisi"));
+defineRule("minLength", (value, [limit]) =>
+    value.length >= limit ? true : `Minimal ${limit} karakter`
+);
+defineRule("numberOnly", (value) =>
+    /^\d+$/.test(value) ? true : "Hanya boleh angka"
+);
+
+// Gunakan inertia untuk pengiriman form
 const form = useForm({
-    nomor_rumah: '',
-    alamat_rumah: '',
-    blokRumah: '',
-    fotoRumah: null,
+    nomor_rumah: "",
+    alamat_rumah: "",
+    blokRumah: "",
 });
 
 const submit = () => {
-  form.post(route('TambahRumah.store'), {
-    onSuccess: () => {
-      form.reset();
-    },
-    onError: () => {
-      console.log('Validation errors:', form.errors);
-    },
-  });
+    // Kirim form menggunakan Inertia.js
+    form.post(route("TambahRumah.store"), {
+        onSuccess: () => form.reset(),
+        onError: () => alert("Validation errors:", form.errors),
+    });
 };
 </script>
 
@@ -33,7 +39,8 @@ const submit = () => {
                     <li class="breadcrumb-item active">Layouts</li>
                 </ol>
             </nav>
-        </div><!-- End Page Title -->
+        </div>
+
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
@@ -42,37 +49,35 @@ const submit = () => {
                             <h5 class="card-title">Tambahkan Rumah</h5>
 
                             <!-- Floating Labels Form -->
-                            <form @submit.prevent="submit" class="row g-3">
+                            <VeeForm @submit="submit" class="row g-3">
                                 <div class="col-md-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="floatingName" placeholder=""
-                                            v-model="form.nomor_rumah">
+                                        <Field type="text" name="nomor_rumah" class="form-control" id="floatingName"
+                                            placeholder="Nomor Rumah" v-model="form.nomor_rumah"
+                                            rules="required|numberOnly" />
                                         <label for="floatingName">Nomor Rumah</label>
+                                        <ErrorMessage name="nomor_rumah" class="text-danger" />
                                     </div>
-                                    <span v-if="form.errors.nomor_rumah" class="text-danger">{{ form.errors.nomor_rumah }}</span>
-
                                 </div>
+
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Address" id="floatingTextarea"
-                                            style="height: 100px;" v-model="form.alamat_rumah"></textarea>
+                                        <Field as="textarea" name="alamat_rumah" class="form-control"
+                                            id="floatingTextarea" placeholder="Alamat Rumah" v-model="form.alamat_rumah"
+                                            style="height: 100px" rules="required|minLength:10" />
                                         <label for="floatingTextarea">Alamat Rumah</label>
+                                        <ErrorMessage name="alamat_rumah" class="text-danger" />
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="file" class="form-control" id="floatingPassword" placeholder="" v-model="form.fotoRumah">
-                                        <label for="floatingPassword">Foto Rumah</label>
-                                    </div>
-                                </div> -->
-
 
                                 <div class="text-center d-flex justify-content-start gap-3 mt-5">
                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="reset" class="btn btn-secondary">Reset</button>
+                                    <button type="reset" class="btn btn-secondary" @click="form.reset()">
+                                        Reset
+                                    </button>
                                 </div>
-                            </form>
-                            <!-- End floating Labels Form -->
+                            </VeeForm>
+                            <!-- End Floating Labels Form -->
                         </div>
                     </div>
                 </div>

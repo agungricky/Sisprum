@@ -129,9 +129,9 @@ import { Link } from '@inertiajs/vue3';
                 </a>
                 <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="tables-general.html">
-                            <i class="bi bi-circle"></i><span>General Tables</span>
-                        </a>
+                        <Link :href="route('DataRumah')">
+                            <i class="bi bi-circle"></i><span>Data Rumah</span>
+                        </Link>
                     </li>
                     <li>
                         <a href="tables-data.html">
