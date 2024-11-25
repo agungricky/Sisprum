@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rumah;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class RumahController extends Controller
 {
@@ -30,6 +31,8 @@ class RumahController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+
         $message = [
             'nomor_rumah.required' => 'Nomor RUmah wajib diisi.',
             'alamat_rumah.required' => 'Alamat rumah wajib di isi.',
@@ -41,7 +44,6 @@ class RumahController extends Controller
             'alamat_rumah' => 'required',
         ], $message);
 
-        // dd(Rumah::all());
         Rumah::create($validated);
         return redirect()->route('TambahRumah')->with('success', 'Data rumah berhasil ditambahkan.');
     }
@@ -57,17 +59,21 @@ class RumahController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $user = Rumah::findOrFail($id);
+
+        return Inertia::render('EditRumah', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $user = Rumah::findOrFail($id);
+        $user->update($request->only('nomor_rumah', 'alamat_rumah'));
+        return redirect()->route('users.edit', $user->id)->with('success', 'User updated successfully');
     }
 
     /**

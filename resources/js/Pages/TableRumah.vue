@@ -61,7 +61,7 @@ function deleteRumah(id) {
                                         <td>-</td>
                                         <td>
                                             <div class="d-flex">
-                                                <button class="btn btn-warning text-light me-2">
+                                                <button class="btn btn-warning text-light me-2" @click="router.get(route('users.edit', Rmh.id))">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </button>
                                                 <div class="d-flex">
