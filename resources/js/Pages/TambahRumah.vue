@@ -1,29 +1,28 @@
 <script setup>
 import Main from '../Pages/main.vue';
+import { Form, Field, ErrorMessage } from 'vee-validate';
+import { object, string } from 'yup';
 import { useForm } from '@inertiajs/vue3';
-import { defineRule, Field, Form as VeeForm, ErrorMessage } from "vee-validate";
 
-// Definisikan aturan validasi Yup
-defineRule("required", (value) => (value ? true : "Field ini wajib diisi"));
-defineRule("minLength", (value, [limit]) =>
-    value.length >= limit ? true : `Minimal ${limit} karakter`
-);
-defineRule("numberOnly", (value) =>
-    /^\d+$/.test(value) ? true : "Hanya boleh angka"
-);
-
-// Gunakan inertia untuk pengiriman form
-const form = useForm({
-    nomor_rumah: "",
-    alamat_rumah: "",
-    blokRumah: "",
+// Skema Validasi Yup
+const schema = object({
+    nomor_rumah: string().required('Nomor rumah wajib diisi'),
+    alamat_rumah: string()
+        .required('Alamat rumah wajib diisi')
+        .min(10, 'Alamat minimal 10 karakter'),
 });
 
+// Inertia.js untuk pengiriman form
+const form = useForm({
+    nomor_rumah: '',
+    alamat_rumah: '',
+});
+
+// Fungsi Submit
 const submit = () => {
-    // Kirim form menggunakan Inertia.js
-    form.post(route("TambahRumah.store"), {
+    form.post(route('TambahRumah.store'), {
         onSuccess: () => form.reset(),
-        onError: () => alert("Validation errors:", form.errors),
+        onError: (errors) => console.log('Validation errors:', errors),
     });
 };
 </script>
@@ -31,14 +30,7 @@ const submit = () => {
 <template>
     <Main>
         <div class="pagetitle">
-            <h1>Form Layouts</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item">Forms</li>
-                    <li class="breadcrumb-item active">Layouts</li>
-                </ol>
-            </nav>
+            <h1>Form Tambah Rumah</h1>
         </div>
 
         <section class="section">
@@ -48,36 +40,38 @@ const submit = () => {
                         <div class="card-body">
                             <h5 class="card-title">Tambahkan Rumah</h5>
 
-                            <!-- Floating Labels Form -->
-                            <VeeForm @submit="submit" class="row g-3">
+                            <!-- Form VeeValidate -->
+                            <Form :validation-schema="schema" @submit="submit" v-slot="{ meta }" class="row g-3">
+                                <!-- Field Nomor Rumah -->
                                 <div class="col-md-12">
                                     <div class="form-floating">
-                                        <Field type="text" name="nomor_rumah" class="form-control" id="floatingName"
-                                            placeholder="Nomor Rumah" v-model="form.nomor_rumah"
-                                            rules="required|numberOnly" />
-                                        <label for="floatingName">Nomor Rumah</label>
+                                        <Field name="nomor_rumah" id="nomor_rumah" class="form-control"
+                                            placeholder="Nomor Rumah" v-model="form.nomor_rumah" />
+                                        <label for="nomor_rumah">Nomor Rumah</label>
                                         <ErrorMessage name="nomor_rumah" class="text-danger" />
                                     </div>
                                 </div>
 
+                                <!-- Field Alamat Rumah -->
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <Field as="textarea" name="alamat_rumah" class="form-control"
-                                            id="floatingTextarea" placeholder="Alamat Rumah" v-model="form.alamat_rumah"
-                                            style="height: 100px" rules="required|minLength:10" />
-                                        <label for="floatingTextarea">Alamat Rumah</label>
+                                        <Field name="alamat_rumah" id="alamat_rumah" as="textarea" class="form-control"
+                                            placeholder="Alamat Rumah" v-model="form.alamat_rumah"
+                                            style="height: 100px" />
+                                        <label for="alamat_rumah">Alamat Rumah</label>
                                         <ErrorMessage name="alamat_rumah" class="text-danger" />
                                     </div>
                                 </div>
 
-                                <div class="text-center d-flex justify-content-start gap-3 mt-5">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="reset" class="btn btn-secondary" @click="form.reset()">
-                                        Reset
+                                <!-- Tombol Submit -->
+                                <div class="text-center mt-5">
+                                    <button type="submit" class="btn btn-primary" :disabled="!meta.valid">
+                                        Submit
                                     </button>
+                                    <button type="reset" class="btn btn-secondary" @click="form.reset()">Reset</button>
                                 </div>
-                            </VeeForm>
-                            <!-- End Floating Labels Form -->
+                            </Form>
+                            <!-- End Form -->
                         </div>
                     </div>
                 </div>
@@ -85,3 +79,15 @@ const submit = () => {
         </section>
     </Main>
 </template>
+
+<style>
+.text-danger {
+    font-size: 0.9rem;
+    color: red;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+</style>
