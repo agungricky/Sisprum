@@ -1,4 +1,5 @@
 <script setup>
+import Logo from '../../../public/assets/img/logo.png';
 function toggleSidebar() {
     document.body.classList.toggle('toggle-sidebar');
 }
@@ -8,7 +9,7 @@ function toggleSidebar() {
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img :src="`assets/img/logo.png`" alt="" />
+                <img :src="Logo" alt="" />
                 <span class="d-none d-lg-block">NiceAdmin</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn" @click="toggleSidebar"></i>

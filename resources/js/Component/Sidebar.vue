@@ -134,9 +134,9 @@ import { Link } from '@inertiajs/vue3';
                         </Link>
                     </li>
                     <li>
-                        <a href="tables-data.html">
-                            <i class="bi bi-circle"></i><span>Data Tables</span>
-                        </a>
+                        <Link :href="route('dataPenghuni.index')">
+                            <i class="bi bi-circle"></i><span>Data Penghuni</span>
+                        </Link>
                     </li>
                 </ul>
             </li>
