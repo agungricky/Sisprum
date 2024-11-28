@@ -1,7 +1,13 @@
 <script setup>
 defineProps({
-    button: Object
+    button: Object,
+    item: {
+        type:Object,
+        require: true
+    }
 })
+
+const emit = defineEmits(['delete']);
 
 </script>
 <template>
@@ -14,7 +20,7 @@ defineProps({
                 <i class="fas fa-edit"></i> Edit
             </button>
             <div class="d-flex">
-                <button class="btn btn-danger" v-if="button.Delete === true">
+                <button class="btn btn-danger" v-if="button.Delete === true" @click="$emit('delete', item.id)">
                     <i class="fas fa-trash-alt"></i> Hapus
                 </button>
             </div>

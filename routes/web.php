@@ -16,3 +16,4 @@ Route::get('/users/{id}/edit', [RumahController::class, 'edit'])->name('users.ed
 Route::put('/users/{id}', [RumahController::class, 'update'])->name('users.update');
 
 Route::get('/Penghuni', [PenghuniController::class, 'index'])->name('dataPenghuni.index');
+Route::delete('/penguni/{id}', [PenghuniController::class, 'destroy'])->name('penghuni.destroy');

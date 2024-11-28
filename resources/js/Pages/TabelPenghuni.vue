@@ -5,15 +5,11 @@ import Tabel from '../Component/TabelKomponen/Tabel.vue';
 
 
 const title = ['Data Penghuni', 'Home', 'Tables', 'Data Penghuni'];
-const tabelTitle = [
-    'No',
-    'Nama Lengakap',
-    'Foto Ktp',
-    'Status Penghuni',
-    'Nomor Telp',
-    'Status Nikah'
-];
-
+const tabelTitle = [ 'No', 'Nama Lengakap', 'Foto Ktp', 'Status Penghuni', 'Nomor Telp', 'Status Nikah', 'Aksi'];
+const text = {
+    'h5': 'Data Rumah',
+    'p': 'Berikut ini merupakan data Rumah yang ada di <b>MojoRoto Indah</b>.'
+}
 const button = {
     'View': true,
     'Edit': true,
@@ -26,6 +22,13 @@ defineProps({
         require:true
     }
 })
+
+import { onMounted } from 'vue';
+
+onMounted(() => {
+    $('#example').DataTable();
+})
+
 </script>
 
 <template>
@@ -35,7 +38,7 @@ defineProps({
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
-                    <Tabel :tabelTitle="tabelTitle" :penghuni="penghuni" :button="button"/>        
+                    <Tabel :tabelTitle="tabelTitle" :data="penghuni" :button="button" :text="text" deleteRoute="Penghuni"/>        
                 </div>
             </div>
         </section>

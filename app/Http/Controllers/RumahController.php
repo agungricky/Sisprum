@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RumahResource;
 use App\Models\Rumah;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,8 +14,9 @@ class RumahController extends Controller
      */
     public function index()
     {
-        $Rumah = Rumah::all()->toArray();
-        // dd($Rumah);
+        $rumah = Rumah::all();
+        $Rumah = RumahResource::collection($rumah)->toArray(request());
+        // return response()->json($Rumah);
         return inertia('TableRumah', compact('Rumah'));
     }
 

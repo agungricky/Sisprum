@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PenghuniResource;
 use App\Models\Penghuniperum;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,8 +14,9 @@ class PenghuniController extends Controller
      */
     public function index()
     {
-        $penghuni = Penghuniperum::all()->toArray();
-        // dd($penghuni);
+        $data = Penghuniperum::all();
+        $penghuni = PenghuniResource::collection($data)->toArray(request());
+
         return Inertia('TabelPenghuni', compact('penghuni'));
     }
 
@@ -63,6 +65,7 @@ class PenghuniController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Penghuniperum::find($id)->delete();
+        return redirect()->route('penghuni.destroy');
     }
 }
