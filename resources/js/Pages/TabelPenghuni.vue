@@ -8,7 +8,7 @@ const title = ['Data Penghuni', 'Home', 'Tables', 'Data Penghuni'];
 const tabelTitle = [ 'No', 'Nama Lengakap', 'Foto Ktp', 'Status Penghuni', 'Nomor Telp', 'Status Nikah', 'Aksi'];
 const text = {
     'h5': 'Data Rumah',
-    'p': 'Berikut ini merupakan data Rumah yang ada di <b>MojoRoto Indah</b>.'
+    'p': 'Berikut ini merupakan data Penghuni yang ada di <b>MojoRoto Indah</b>.'
 }
 const button = {
     'View': true,
@@ -16,14 +16,10 @@ const button = {
     'Delete' : true
 }
 
-defineProps({
-    penghuni: {
-        type: Array,
-        require:true
-    }
-})
+const penghuni = computed(() => usePage().props.penghuni);
 
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 
 onMounted(() => {
     $('#example').DataTable();

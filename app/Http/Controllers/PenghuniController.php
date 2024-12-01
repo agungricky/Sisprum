@@ -66,6 +66,6 @@ class PenghuniController extends Controller
     public function destroy(string $id)
     {
         Penghuniperum::find($id)->delete();
-        return redirect()->route('penghuni.destroy');
+        return redirect()->route('dataPenghuni.index');
     }
 }

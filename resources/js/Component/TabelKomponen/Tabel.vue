@@ -27,7 +27,7 @@ defineProps({
     },
 })
 
-function sukses(){
+function sukses() {
     alert('Data berhasil dihapus.');
 }
 
@@ -79,7 +79,7 @@ function Delete(id, Request) {
                                     </button>
                                     <div class="d-flex">
                                         <button class="btn btn-danger" v-if="button.Delete === true"
-                                            @click="Delete(item.id, deleteRoute)">
+                                        @click="console.log(item.id); Delete(item.id, deleteRoute)">
                                             <i class="fas fa-trash-alt"></i> Hapus
                                         </button>
                                     </div>

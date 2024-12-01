@@ -15,8 +15,8 @@ const text = {
 }
 const button = {
     'View': false,
-    'Edit': true,
-    'Delete' : true
+    'Edit': false,
+    'Delete' : false
 }
 
 onMounted(() => {
