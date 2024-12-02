@@ -14,9 +14,9 @@ const text = {
     'p': 'Berikut ini merupakan data Rumah yang ada di <b>MojoRoto Indah</b>.'
 }
 const button = {
-    'View': false,
-    'Edit': false,
-    'Delete' : false
+    'View': true,
+    'Edit': true,
+    'Delete' : true
 }
 
 onMounted(() => {

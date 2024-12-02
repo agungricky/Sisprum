@@ -1,36 +1,31 @@
 <script setup>
 import Main from '../Pages/main.vue';
-import { Form, Field, ErrorMessage } from 'vee-validate';
-import { object, string } from 'yup';
+import InputText from '../Component/FormKomponen/InputText.vue';
+import InputFile from '../Component/FormKomponen/InputFile.vue';
+import InputTextArea from '../Component/FormKomponen/InputTextArea.vue';
+import PageTitle from '../Component/TabelKomponen/PageTitle.vue';
 import { useForm } from '@inertiajs/vue3';
 
-// Skema Validasi Yup
-const schema = object({
-    nomor_rumah: string().required('Nomor rumah wajib diisi'),
-    alamat_rumah: string()
-        .required('Alamat rumah wajib diisi')
-        .min(10, 'Alamat minimal 10 karakter'),
-});
-
-// Inertia.js untuk pengiriman form
+const title = ['Forms', 'Forms', 'Tambah Rumah'];
 const form = useForm({
-    nomor_rumah: '',
-    alamat_rumah: '',
+    nomor_rumah: "",
+    foto_rumah: null,
+    alamat_rumah: ""
 });
 
-// Fungsi Submit
 const submit = () => {
-    form.post(route('TambahRumah.store'), {
-        onSuccess: () => form.reset(),
-        onError: (errors) => console.log('Validation errors:', errors),
-    });
-};
+    form.post(route('TambahRumah.store'),{
+        onSuccess: () =>{
+            form.reset();
+        }
+    })
+}
 </script>
 
 <template>
     <Main>
         <div class="pagetitle">
-            <h1>Form Tambah Rumah</h1>
+            <PageTitle :title="title" />
         </div>
 
         <section class="section">
@@ -38,40 +33,23 @@ const submit = () => {
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Tambahkan Rumah</h5>
+                            <h5 class="card-title text-center my-4 p-0">===== TAMBAH RUMAH =======</h5>
 
-                            <!-- Form VeeValidate -->
-                            <Form :validation-schema="schema" @submit="submit" v-slot="{ meta }" class="row g-3">
-                                <!-- Field Nomor Rumah -->
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        <Field name="nomor_rumah" id="nomor_rumah" class="form-control"
-                                            placeholder="Nomor Rumah" v-model="form.nomor_rumah" />
-                                        <label for="nomor_rumah">Nomor Rumah</label>
-                                        <ErrorMessage name="nomor_rumah" class="text-danger" />
-                                    </div>
+                            <form @submit.prevent="submit" class="row g-3">
+                                <div class="col-md-6">
+                                    <InputText v-model="form.nomor_rumah" input_text="Masukan Nomor Rumah" />
                                 </div>
-
-                                <!-- Field Alamat Rumah -->
+                                <div class="col-md-6">
+                                    <InputFile v-model="form.foto_rumah" input_file="Silahkan upload File Berupa Gambar"/>
+                                </div>
                                 <div class="col-12">
-                                    <div class="form-floating">
-                                        <Field name="alamat_rumah" id="alamat_rumah" as="textarea" class="form-control"
-                                            placeholder="Alamat Rumah" v-model="form.alamat_rumah"
-                                            style="height: 100px" />
-                                        <label for="alamat_rumah">Alamat Rumah</label>
-                                        <ErrorMessage name="alamat_rumah" class="text-danger" />
-                                    </div>
+                                    <InputTextArea v-model="form.alamat_rumah" input_textArea = "Silahkan Masukan Alamat Rumah"/>
                                 </div>
-
-                                <!-- Tombol Submit -->
-                                <div class="text-center mt-5">
-                                    <button type="submit" class="btn btn-primary" :disabled="!meta.valid">
-                                        Submit
-                                    </button>
-                                    <button type="reset" class="btn btn-secondary" @click="form.reset()">Reset</button>
+                                <div class="text-center d-flex justify-content-center gap-2">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="reset" @click="form.reset()" class="btn btn-secondary">Reset</button>
                                 </div>
-                            </Form>
-                            <!-- End Form -->
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -79,15 +57,3 @@ const submit = () => {
         </section>
     </Main>
 </template>
-
-<style>
-.text-danger {
-    font-size: 0.9rem;
-    color: red;
-}
-
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-</style>
