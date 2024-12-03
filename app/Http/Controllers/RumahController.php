@@ -38,14 +38,21 @@ class RumahController extends Controller
         $message = [
             'nomor_rumah.required' => 'Nomor RUmah wajib diisi.',
             'alamat_rumah.required' => 'Alamat rumah wajib di isi.',
-       ];
-       
+        ];
+
         // Validasi data
         $validated = $request->validate([
             'nomor_rumah' => 'required',
+            'foto_rumah' => 'required',
             'alamat_rumah' => 'required',
         ], $message);
 
+        $foto = $validated['foto_rumah'];
+        $extension = $foto->getClientOriginalExtension();
+        $nama = 'Rumah_' . $validated['nomor_rumah'] .'.' . $extension;
+
+        $foto->move('FotoRumah', $nama);
+        $validated['foto_rumah'] = $nama;
         Rumah::create($validated);
         return redirect()->route('TambahRumah')->with('success', 'Data rumah berhasil ditambahkan.');
     }
