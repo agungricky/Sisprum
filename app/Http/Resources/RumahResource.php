@@ -16,8 +16,8 @@ class RumahResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'Nomor Rumah' => $this->nomor_rumah,
-            'Alamat Rumah' => $this->alamat_rumah,
+            'NomorRumah' => $this->nomor_rumah,
+            'AlamatRumah' => $this->alamat_rumah,
             'Foto' => $this->foto_rumah
         ];
     }

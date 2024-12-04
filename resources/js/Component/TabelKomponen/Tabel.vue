@@ -1,6 +1,9 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
-defineProps({
+import ViewModal from '../view_DetailKomponen/ViewModal.vue';
+import { ref } from 'vue';
+
+const props = defineProps({
     button: {
         type: Object,
         require: true
@@ -13,7 +16,7 @@ defineProps({
 
     data: {
         type: Array,
-        require: true
+        required: true
     },
 
     text: {
@@ -26,6 +29,14 @@ defineProps({
         required: true,
     },
 })
+
+const selectedData = ref(null);
+
+function view(id) {
+    // Mengakses props.data dengan benar
+    selectedData.value = props.data.find(item => item.id === id);
+    console.log(selectedData.value); // Menampilkan data berdasarkan ID
+}
 
 function sukses() {
     alert('Data berhasil dihapus.');
@@ -45,9 +56,8 @@ function Delete(id, Request) {
         }
     }
 }
-
-
 </script>
+
 <template>
     <div class="card">
         <div class="card-body">
@@ -71,7 +81,8 @@ function Delete(id, Request) {
                             </template>
                             <td class="text-center">
                                 <div class="d-flex">
-                                    <button class="btn btn-success text-light me-2" v-if="button.View === true">
+                                    <button class="btn btn-success text-light me-2" data-bs-toggle="modal"
+                                        data-bs-target="#largeModal" v-if="button.View === true" @click="view(item.id)">
                                         <i class="fas fa-eye"></i> View
                                     </button>
                                     <button class="btn btn-warning text-light me-2" v-if="button.Edit === true">
@@ -79,7 +90,7 @@ function Delete(id, Request) {
                                     </button>
                                     <div class="d-flex">
                                         <button class="btn btn-danger" v-if="button.Delete === true"
-                                        @click="console.log(item.id); Delete(item.id, deleteRoute)">
+                                            @click="Delete(item.id, deleteRoute)">
                                             <i class="fas fa-trash-alt"></i> Hapus
                                         </button>
                                     </div>
@@ -91,5 +102,7 @@ function Delete(id, Request) {
             </div>
             <!-- End Table with stripped rows -->
         </div>
+
+        <ViewModal :selectedData="selectedData"/>
     </div>
 </template>

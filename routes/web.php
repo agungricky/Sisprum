@@ -8,6 +8,10 @@ Route::get('/', function () {
     return inertia('Dashboard');
 })->name('Dashboard');
 
+Route::get('/coba', function () {
+    return inertia('Show_detail');
+});
+
 Route::get('/DataRumah', [RumahController::class, 'index'])->name('DataRumah');
 Route::get('/TambahRumah', [RumahController::class, 'create'])->name('TambahRumah');
 Route::post('/TambahRumah', [RumahController::class, 'store'])->name('TambahRumah.store');
