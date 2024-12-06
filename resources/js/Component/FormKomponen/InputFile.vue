@@ -13,6 +13,7 @@ defineProps({
             id="floatingFile"
             :placeholder="input_file"
             @change="$emit('update:modelValue', $event.target.files[0])" />
+
         <label for="floatingFile">{{ input_file }}</label>
     </div>
 </template>

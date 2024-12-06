@@ -5,8 +5,6 @@ const props = defineProps({
         required: true
     }
 })
-
-const defaultFotoPath = "asset('/public/FotoRumah/default.png')";
 </script>
 
 <template>
@@ -20,16 +18,19 @@ const defaultFotoPath = "asset('/public/FotoRumah/default.png')";
                 <div class="modal-body" v-if="selectedData">
                     <div class="row">
                         <div class="col-md-8">
-                            <img :src="selectedData.FotoRumah ? `../../../../public/FotoRumah/${selectedData.FotoRumah}` : defaultFotoPath" alt="Foto Rumah">
+                            <!-- Aturan divue semuanya dimulai dari manual -->
+                            <img :src="`/Sisprum/public/FotoRumah/${selectedData.Foto}`" :alt="selectedData.Foto">
                         </div>
                         <div class="col-md-4">
                             <div class="mb-2">
                                 <label for="nomor_rumah">Nomor Rumah</label>
-                                <input class="w-100" type="text" :value="selectedData.NomorRumah" id="nomor_rumah" disabled>
+                                <input class="w-100" type="text" :value="selectedData.NomorRumah" id="nomor_rumah"
+                                    disabled>
                             </div>
                             <div class="">
                                 <label for="nomor_rumah">Nomor Rumah</label>
-                                <textarea class="w-100" id="nomor_rumah" :value="selectedData.AlamatRumah" rows="5" disabled>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, omnis.</textarea>
+                                <textarea class="w-100" id="nomor_rumah" :value="selectedData.AlamatRumah" rows="5"
+                                    disabled>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, omnis.</textarea>
                             </div>
                         </div>
                     </div>

@@ -31,7 +31,7 @@ class RumahController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+public function store(Request $request)
     {
         // dd($request->all());
 
@@ -43,7 +43,7 @@ class RumahController extends Controller
         // Validasi data
         $validated = $request->validate([
             'nomor_rumah' => 'required',
-            'foto_rumah' => 'required',
+            'foto_rumah' => 'required|mimetypes:image/jpeg,image/png|max:2048',
             'alamat_rumah' => 'required',
         ], $message);
 
@@ -51,7 +51,7 @@ class RumahController extends Controller
         $extension = $foto->getClientOriginalExtension();
         $nama = 'Rumah_' . $validated['nomor_rumah'] .'.' . $extension;
 
-        $foto->move('FotoRumah', $nama);
+        $foto->move(public_path('FotoRumah'), $nama);
         $validated['foto_rumah'] = $nama;
         Rumah::create($validated);
         return redirect()->route('TambahRumah')->with('success', 'Data rumah berhasil ditambahkan.');
