@@ -8,9 +8,9 @@ Route::get('/', function () {
     return inertia('Dashboard');
 })->name('Dashboard');
 
-// Route::get('/coba', function () {
-//     return inertia('Show_detail');
-// });
+Route::get('/coba', function () {
+    return inertia('coba');
+});
 
 Route::get('/DataRumah', [RumahController::class, 'index'])->name('DataRumah');
 Route::get('/TambahRumah', [RumahController::class, 'create'])->name('TambahRumah');

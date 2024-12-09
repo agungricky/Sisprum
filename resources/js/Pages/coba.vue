@@ -1,14 +1,16 @@
 <script setup>
-import Main from '../Pages/main.vue';
-import InputText from '../Component/FormKomponen/InputText.vue';
-import InputFile from '../Component/FormKomponen/InputFile.vue';
-import InputTextArea from '../Component/FormKomponen/InputTextArea.vue';
-import PageTitle from '../Component/TabelKomponen/PageTitle.vue';
-import { useForm } from '@inertiajs/vue3';
-
+import Main from "../Pages/main.vue";
+import InputText from "../Component/FormKomponen/InputText.vue";
+import InputFile from "../Component/FormKomponen/InputFile.vue";
+import InputTextArea from "../Component/FormKomponen/InputTextArea.vue";
+import PageTitle from "../Component/TabelKomponen/PageTitle.vue";
 import ErrorMessage from "../Component/message/Validation.vue";
+import { reactive } from "vue";
+// import { useForm } from "vee-validate";
+import { useForm } from '@inertiajs/vue3';
 import * as yup from "yup";
 
+// Schema Validasi
 const schema = yup.object({
     nomor_rumah: yup
         .string()
@@ -37,6 +39,14 @@ const schema = yup.object({
         .min(10, "Alamat Rumah harus terdiri dari minimal 10 karakter.")
 });
 
+// Form Reactive
+const form = reactive({
+    nomor_rumah: "",
+    foto_rumah: null,
+    alamat_rumah: "",
+    errors: {}, // Menyimpan pesan error
+});
+
 // Validasi Realtime
 const validateField = (field) => {
     const value = form[field];
@@ -59,13 +69,7 @@ const handleFileChange = (e) => {
     }
 };
 
-const title = ['Forms', 'Forms', 'Tambah Rumah'];
-const form = useForm({
-    nomor_rumah: "",
-    foto_rumah: null,
-    alamat_rumah: ""
-});
-
+// Fungsi Submit
 const submit = () => {
     // Menjalankan validasi untuk seluruh form
     schema
@@ -91,10 +95,11 @@ const submit = () => {
 };
 </script>
 
+
 <template>
     <Main>
         <div class="pagetitle">
-            <PageTitle :title="title" />
+            <PageTitle :title="['Forms', 'Forms', 'Tambah Rumah']" />
         </div>
 
         <section class="section">
@@ -104,26 +109,37 @@ const submit = () => {
                         <div class="card-body">
                             <h5 class="card-title text-center my-4 p-0">===== TAMBAH RUMAH =======</h5>
 
-                            <form @submit.prevent="submit" action="/upload-photo" enctype="multipart/form-data"
-                                class="row g-3">
+                            <form @submit.prevent="submit" enctype="multipart/form-data" class="row g-3">
+                                <!-- Nomor Rumah -->
                                 <div class="col-md-6">
                                     <InputText v-model="form.nomor_rumah" input_text="Masukan Nomor Rumah"
                                         @input="validateField('nomor_rumah')" />
                                     <ErrorMessage :message="form.errors.nomor_rumah" />
                                 </div>
+
+                                <!-- Foto Rumah -->
                                 <div class="col-md-6">
-                                    <InputFile v-model="form.foto_rumah" input_file="Silahkan upload File Berupa Gambar"
-                                        @change="handleFileChange" />
+                                    <InputFile @change="handleFileChange"
+                                        input_file="Silahkan upload File Berupa Gambar" />
                                     <ErrorMessage :message="form.errors.foto_rumah" />
                                 </div>
+
+                                <!-- Alamat Rumah -->
                                 <div class="col-12">
                                     <InputTextArea v-model="form.alamat_rumah"
-                                        input_textArea="Silahkan Masukan Alamat Rumah" @input="validateField('alamat_rumah')"/>
-                                        <ErrorMessage :message="form.errors.alamat_rumah" />
+                                        input_textArea="Silahkan Masukan Alamat Rumah"
+                                        @input="validateField('alamat_rumah')" />
+                                    <ErrorMessage :message="form.errors.alamat_rumah" />
                                 </div>
+
+                                <!-- Buttons -->
                                 <div class="text-center d-flex justify-content-center gap-2">
                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="reset" @click="form.reset()" class="btn btn-secondary">Reset</button>
+                                    <button type="button"
+                                        @click="Object.assign(form, { nomor_rumah: '', foto_rumah: null, alamat_rumah: '', errors: {} })"
+                                        class="btn btn-secondary">
+                                        Reset
+                                    </button>
                                 </div>
                             </form>
                         </div>
