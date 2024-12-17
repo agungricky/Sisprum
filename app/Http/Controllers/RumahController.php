@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\RumahResource;
 use App\Models\Rumah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class RumahController extends Controller
@@ -31,7 +32,7 @@ class RumahController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-public function store(Request $request)
+    public function store(Request $request)
     {
         // dd($request->all());
 
@@ -49,7 +50,7 @@ public function store(Request $request)
 
         $foto = $validated['foto_rumah'];
         $extension = $foto->getClientOriginalExtension();
-        $nama = 'Rumah_' . $validated['nomor_rumah'] .'.' . $extension;
+        $nama = 'Rumah_' . $validated['nomor_rumah'] . '.' . $extension;
 
         $foto->move(public_path('FotoRumah'), $nama);
         $validated['foto_rumah'] = $nama;
@@ -78,12 +79,23 @@ public function store(Request $request)
     /**
      * Update the specified resource in storage.
      */
+
+    // Update data rumah
     public function update(Request $request, $id)
     {
-        $user = Rumah::findOrFail($id);
-        $user->update($request->only('nomor_rumah', 'alamat_rumah'));
-        return redirect()->route('users.edit', $user->id)->with('success', 'User updated successfully');
+        $rumah = Rumah::find($id);
+
+        $rumah->update([
+            'nomor_rumah' => $request->nomor_rumah ?? $rumah->nomor_rumah,
+            'alamat_rumah' => $request->alamat_rumah ?? $rumah->alamat_rumah,
+            'foto_rumah' => $fotoPath ?? $rumah->foto_rumah,
+        ]);
+
+        // Kembalikan response dengan pesan sukses
+        return redirect()->route('DataRumah')->with('success', 'Rumah berhasil diperbarui!');
     }
+
+
 
     /**
      * Remove the specified resource from storage.

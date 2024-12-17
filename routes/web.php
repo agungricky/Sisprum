@@ -17,9 +17,10 @@ Route::get('/TambahRumah', [RumahController::class, 'create'])->name('TambahRuma
 Route::post('/TambahRumah', [RumahController::class, 'store'])->name('TambahRumah.store');
 Route::delete('/rumah/{id}', [RumahController::class, 'destroy'])->name('rumah.destroy');
 Route::get('/users/{id}/edit', [RumahController::class, 'edit'])->name('users.edit');
-Route::put('/users/{id}', [RumahController::class, 'update'])->name('users.update');
+Route::patch('/users/{id}', [RumahController::class, 'update'])->name('users.update');
 
 Route::get('/Penghuni', [PenghuniController::class, 'index'])->name('dataPenghuni.index');
 Route::delete('/penghuni/{id}', [PenghuniController::class, 'destroy'])->name('penghuni.destroy');
+Route::put('/penghuni/{id}', [PenghuniController::class, 'update'])->name('penghuni.update');
 
 

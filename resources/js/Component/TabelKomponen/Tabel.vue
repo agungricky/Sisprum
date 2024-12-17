@@ -1,6 +1,7 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
-import ViewModal from '../view_DetailKomponen/ViewModal.vue';
+import ViewModal from '../Modal/ViewModal.vue';
+import EditForm_Rumah from '../Modal/EditForm_Rumah.vue';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -30,16 +31,17 @@ const props = defineProps({
     },
 })
 
-const selectedData = ref(null);
 
+
+function sukses() {
+    alert('Data berhasil dihapus.');
+}
+
+const selectedData = ref(null);
 function view(id) {
     // Mengakses props.data dengan benar
     selectedData.value = props.data.find(item => item.id === id);
     console.log(selectedData.value); // Menampilkan data berdasarkan ID
-}
-
-function sukses() {
-    alert('Data berhasil dihapus.');
 }
 
 function Delete(id, Request) {
@@ -55,6 +57,10 @@ function Delete(id, Request) {
             });
         }
     }
+}
+
+function Edit(id){
+    selectedData.value = props.data.find(item => item.id === id);
 }
 </script>
 
@@ -85,7 +91,8 @@ function Delete(id, Request) {
                                         data-bs-target="#largeModal" v-if="button.View === true" @click="view(item.id)">
                                         <i class="fas fa-eye"></i> View
                                     </button>
-                                    <button class="btn btn-warning text-light me-2" v-if="button.Edit === true">
+                                    <button class="btn btn-warning text-light me-2" data-bs-toggle="modal"
+                                    data-bs-target="#largeEdit" v-if="button.Edit === true" @click="Edit(item.id)">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
                                     <div class="d-flex">
@@ -104,5 +111,6 @@ function Delete(id, Request) {
         </div>
 
         <ViewModal :selectedData="selectedData"/>
+        <EditForm_Rumah :selectedData="selectedData"/>
     </div>
 </template>

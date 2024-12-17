@@ -9,6 +9,7 @@ import { useForm } from '@inertiajs/vue3';
 import ErrorMessage from "../Component/message/Validation.vue";
 import * as yup from "yup";
 
+// Mendefinisikan Aturan
 const schema = yup.object({
     nomor_rumah: yup
         .string()
